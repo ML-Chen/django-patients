@@ -59,8 +59,8 @@ ALTER TABLE patient ADD PRIMARY KEY (id);
 CREATE TABLE checkup_ AS (
     SELECT patient.id AS patient, checkup.last_name, checkup.first_name, checkup.dob, date, od, os, va_right, va_left, pd, conj, sclera, tears, cornea, iris, antc, lll, cc
     FROM public.checkup AS checkup LEFT JOIN public.patient AS patient
-    ON patient.last_name = checkup.last_name
-    AND patient.first_name = checkup.first_name
+    ON lower(patient.last_name) = lower(checkup.last_name)
+    AND lower(patient.first_name) = lower(checkup.first_name)
     AND patient.dob = checkup.dob
 );
 ALTER TABLE checkup_ ADD CONSTRAINT fk_checkup_patient FOREIGN KEY (patient) REFERENCES patient (id);
@@ -77,8 +77,8 @@ DROP TABLE checkup_;
 CREATE TABLE glasses_ AS (
     SELECT checkup.patient AS patient, checkup.id AS prescription, glasses.date, brand, model, color, frame, lens, contact_lens, additional_comments, price -- omitting the 'recorded' column
     FROM public.glasses AS glasses LEFT JOIN public.checkup AS checkup
-    ON checkup.last_name = glasses.last_name
-    AND checkup.first_name = glasses.first_name
+    ON lower(checkup.last_name) = lower(glasses.last_name)
+    AND lower(checkup.first_name) = lower(glasses.first_name)
     AND checkup.dob = glasses.dob
 );
 ALTER TABLE glasses_ ADD CONSTRAINT fk_glasses_checkup FOREIGN KEY (prescription) REFERENCES checkup (id);
@@ -90,8 +90,8 @@ ALTER TABLE glasses_ RENAME TO glasses;
 CREATE TABLE insurance_ AS (
     SELECT patient.id AS patient, insurance.last_name, insurance.first_name, insurance.dob, insurance_id, insurance_id_2, can_call, called
     FROM public.insurance AS insurance LEFT JOIN public.patient AS patient
-    ON patient.last_name = insurance.last_name
-    AND patient.first_name = insurance.first_name
+    ON lower(patient.last_name) = lower(insurance.last_name)
+    AND lower(patient.first_name) = lower(insurance.first_name)
     AND patient.dob = insurance.dob
 );
 ALTER TABLE insurance_ ADD CONSTRAINT fk_insurance_patient FOREIGN KEY (patient) REFERENCES patient (id);
@@ -102,30 +102,62 @@ ALTER TABLE insurance_ RENAME TO insurance;
 ALTER TABLE checkup RENAME TO glasses_prescription;
 ALTER TABLE public.glasses RENAME COLUMN date TO date;
 
--- CONTINUE HERE
-
 ALTER TABLE glasses RENAME TO glasses_;
 ALTER TABLE glasses_prescription RENAME to glasses_prescription_;
 ALTER TABLE insurance RENAME TO insurance_;
 ALTER TABLE patient RENAME TO patient_;
 
+UPDATE glasses_ SET brand = '' WHERE brand IS NULL;
+UPDATE glasses_ SET model = '' WHERE model IS NULL;
+UPDATE glasses_ SET color = '' WHERE color IS NULL;
+UPDATE glasses_ SET frame = '' WHERE frame IS NULL;
+UPDATE glasses_ SET lens = '' WHERE lens IS NULL;
+UPDATE glasses_ SET contact_lens = '' WHERE contact_lens IS NULL;
+UPDATE glasses_ SET additional_comments = '' WHERE additional_comments IS NULL;
+UPDATE glasses_ SET price = '' WHERE price IS NULL;
+UPDATE glasses_prescription_ SET od = '' WHERE od IS NULL;
+UPDATE glasses_prescription_ SET os = '' WHERE os IS NULL;
+UPDATE glasses_prescription_ SET va_right = '' WHERE va_right IS NULL;
+UPDATE glasses_prescription_ SET va_left = '' WHERE va_left IS NULL;
+UPDATE glasses_prescription_ SET va_left = '' WHERE va_left IS NULL;
+UPDATE glasses_prescription_ SET va_left = '' WHERE va_left IS NULL;
+UPDATE glasses_prescription_ SET conj = '' WHERE conj IS NULL;
+UPDATE glasses_prescription_ SET sclera = '' WHERE sclera IS NULL;
+UPDATE glasses_prescription_ SET tears = '' WHERE tears IS NULL;
+UPDATE glasses_prescription_ SET cornea = '' WHERE cornea IS NULL;
+UPDATE glasses_prescription_ SET va_left = '' WHERE va_left IS NULL;
+UPDATE glasses_prescription_ SET iris = '' WHERE iris IS NULL;
+UPDATE glasses_prescription_ SET antc = '' WHERE antc IS NULL;
+UPDATE glasses_prescription_ SET cc = '' WHERE cc IS NULL;
+UPDATE glasses_prescription_ SET lll = '' WHERE lll IS NULL;
+UPDATE insurance_ SET insurance_id = '' WHERE insurance_id IS NULL;
+UPDATE insurance_ SET insurance_id_2 = '' WHERE insurance_id_2 IS NULL;
+UPDATE patient_ SET phone = '' WHERE phone IS NULL;
+UPDATE patient_ SET phone_2 = '' WHERE phone_2 IS NULL;
+UPDATE patient_ SET address = '' WHERE address IS NULL;
+UPDATE patient_ SET gender = '' WHERE gender IS NULL;
+
 -- DROP TABLE auth_group, auth_group_permissions, auth_permission, auth_user, auth_user, auth_user_groups, auth_user_user_permissions, django_admin_log, django_content_type, django_migrations;
 
 -- After Django migration recreates tables, copy data over from existing tables
-INSERT INTO glasses (patient, prescription, date, brand, model, color, frame, lens, contact_lens, price, additional_comments)
+
+ALTER TABLE glasses ALTER size SET DEFAULT '';
+ALTER TABLE glasses_prescription ALTER notes SET DEFAULT '';
+
+INSERT INTO glasses (patient_id, prescription_id, date, brand, model, color, frame, lens, contact_lens, price, additional_comments)
 SELECT patient, prescription, date, brand, model, color, frame, lens, contact_lens, price, additional_comments
-FROM glasses_
+FROM glasses_;
 
-INSERT INTO glasses_prescription (id, patient, date, od, os, va_right, va_left, pd, cc, conj, sclera, tears, cornea, iris, antc, lll)
-SELECT (id, patient, date, od, os, va_right, va_left, pd, cc, conj, sclera, tears, cornea, iris, antc, lll)
-FROM glasses_prescription_
+INSERT INTO glasses_prescription (id, patient_id, date, od, os, va_right, va_left, pd, cc, conj, sclera, tears, cornea, iris, antc, lll)
+SELECT (pk, patient, date, od, os, va_right, va_left, pd, cc, conj, sclera, tears, cornea, iris, antc, lll)
+FROM glasses_prescription_;
 
-INSERT INTO insurance (id, patient, last_name, first_name, dob, insurance_id, insurance_id_2, can_call, called)
-SELECT id, patient, last_name, first_name, dob, insurance_id, insurance_id_2, can_call, called
-FROM insurance_
+INSERT INTO insurance (id, patient_id, last_name, first_name, dob, insurance_id, insurance_id_2, can_call, called)
+SELECT pk, patient, last_name, first_name, dob, insurance_id, insurance_id_2, can_call, called
+FROM insurance_;
 
 INSERT INTO patient (id, last_name, first_name, dob, phone, phone_2, address, gender, downstairs)
-SELECT id, last_name, first_name, dob, phone, phone_2, address, gender, downstairs
-FROM patient_
+SELECT pk, last_name, first_name, dob, phone, phone_2, address, gender, downstairs
+FROM patient_;
 
 DROP TABLE glasses_, glasses_prescription_, insurance, patient_

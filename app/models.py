@@ -23,7 +23,7 @@ class GlassesPrescription(models.Model):
     nv = models.BooleanField(verbose_name='Is reading prescription', default=False, null=True)
     height = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     cc = models.CharField(max_length=255, blank=True, default='')
-    notes = models.CharField(max_length=250, blank=True)
+    notes = models.CharField(max_length=250, blank=True, default='')
 
     # Deprecated
     conj = models.CharField(max_length=255, blank=True, default='')
@@ -45,7 +45,7 @@ class ContactLensPrescription(models.Model):
     image = models.ImageField(upload_to='prescriptions/%Y/%m/%d', blank=True)
     va_right = models.CharField(verbose_name='Visual acuity right', max_length=8, blank=True, help_text='E.g., 20/40')
     va_left = models.CharField(verbose_name='Visual acuity right', max_length=8, blank=True)
-    notes = models.CharField(max_length=255, blank=True)
+    notes = models.CharField(max_length=255, blank=True, default='')
 
     od_pwr = models.DecimalField(
         verbose_name='OD power',
@@ -119,9 +119,9 @@ class ContactLensPrescription(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(10)],
         null=True
     )
-    color = models.CharField(max_length=25, blank=True)
-    brand = models.CharField(max_length=30, blank=True)
-    replacement_schedule = models.CharField(max_length=30, blank=True)
+    color = models.CharField(max_length=25, blank=True, default='')
+    brand = models.CharField(max_length=30, blank=True, default='')
+    replacement_schedule = models.CharField(max_length=30, blank=True, default='')
 
     class Meta:
         db_table = 'contact_lens_prescription'
@@ -168,8 +168,8 @@ class ComprehensiveExam(models.Model):
     anterior_chamber = models.CharField(max_length=100, blank=True)
 
     # TODO: integrate a drawing app, something like https://nidhinp.wordpress.com/2014/02/19/paint-app-in-django/
-    drawing1 = models.ImageField(blank=True, null=True)
-    drawing2 = models.ImageField(blank=True, null=True)
+    drawing1 = models.ImageField(blank=True)
+    drawing2 = models.ImageField(blank=True)
 
     # Dilated fundus exam
     gtt = models.IntegerField(verbose_name="GTT", help_text="# of eye drops", blank=True, null=True)
@@ -256,8 +256,8 @@ class Patient(models.Model):
     phone_2 = models.CharField(max_length=255, blank=True, default='')
     email = models.EmailField(blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, default='')
-    consent_hipaa = models.BooleanField(verbose_name="Consent to HIPAA privacy policy", default=False)
-    consent_tcpa = models.BooleanField(verbose_name="Consent to text messages", default=False)
+    consent_hipaa = models.NullBooleanField(verbose_name="Consent to HIPAA privacy policy", default=False)
+    consent_tcpa = models.NullBooleanField(verbose_name="Consent to text messages", default=False)
     downstairs = models.BooleanField(default=False)
 
     def __str__(self):
@@ -299,8 +299,8 @@ class Glasses(models.Model):
     lens = models.CharField(max_length=255, blank=True, default='')
     contact_lens = models.CharField(max_length=255, blank=True, default='', verbose_name='Contact lens (deprecated)')
     tray_num = models.IntegerField(verbose_name="Tray #", validators=[MinValueValidator(800), MaxValueValidator(999)], null=True)
+    price = models.CharField(max_length=255, blank=True)
     additional_comments = models.TextField(blank=True, default='')
-    price = models.CharField(max_length=255)
 
     class Meta:
         verbose_name_plural = 'glasses'
