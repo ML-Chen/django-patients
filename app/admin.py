@@ -24,7 +24,7 @@ class ComprehensiveExamInline(admin.TabularInline):
 
 @admin.register(Patient)
 class PatientAdmin(admin.ModelAdmin):
-    search_fields = ['first_name', 'last_name', 'date_of_birth', 'phone', 'phone_2']
+    search_fields = ['first_name', 'last_name', 'dob', 'phone', 'phone_2']
     inlines = [InsuranceInline, GlassesInline, GlassesPrescriptionInline, ContactLensPrescriptionInline, ComprehensiveExamInline]
 
 

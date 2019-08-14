@@ -1,3 +1,5 @@
+-- https://stackoverflow.com/a/57436699/5139284 for how to export Access databases to Postgres
+
 ALTER TABLE postgres.public."Checkups" RENAME COLUMN "Last Name" TO last_name;
 ALTER TABLE postgres.public."Checkups" RENAME COLUMN "First Name" TO first_name;
 ALTER TABLE postgres.public."Checkups" RENAME COLUMN "Exam date" TO date;
@@ -100,7 +102,6 @@ DROP TABLE insurance;
 ALTER TABLE insurance_ RENAME TO insurance;
 
 ALTER TABLE checkup RENAME TO glasses_prescription;
-ALTER TABLE public.glasses RENAME COLUMN date TO date;
 
 ALTER TABLE glasses RENAME TO glasses_;
 ALTER TABLE glasses_prescription RENAME to glasses_prescription_;
@@ -137,34 +138,40 @@ UPDATE patient_ SET phone_2 = '' WHERE phone_2 IS NULL;
 UPDATE patient_ SET address = '' WHERE address IS NULL;
 UPDATE patient_ SET gender = '' WHERE gender IS NULL;
 
--- DROP TABLE auth_group, auth_group_permissions, auth_permission, auth_user, auth_user, auth_user_groups, auth_user_user_permissions, django_admin_log, django_content_type, django_migrations;
+-- Manually fix invalid PDs.
+SELECT * FROM glasses_prescription_ WHERE pd > 90;
 
 -- After Django migration recreates tables, copy data over from existing tables
 
 ALTER TABLE glasses ALTER size SET DEFAULT '';
 ALTER TABLE glasses_prescription ALTER notes SET DEFAULT '';
-"""
-ALTER TABLE patient ADD UNIQUE (
-    REPLACE(REPLACE(last_name, ' ', ''), ',', ''),
-    REPLACE(REPLACE(first_name, ' ', ''), ',', ''),
-    dob
-);
-"""
+ALTER TABLE glasses_prescription ALTER outside SET DEFAULT false;
+
+INSERT INTO patient (id, last_name, first_name, dob, phone, phone_2, address, gender, downstairs)
+SELECT id, last_name, first_name, dob, phone, phone_2, address, gender, downstairs
+FROM patient_;
+
+INSERT INTO glasses_prescription (id, patient_id, date, od, os, va_right, va_left, pd, cc, conj, sclera, tears, cornea, iris, antc, lll)
+SELECT id, patient, date, od, os, va_right, va_left, pd, cc, conj, sclera, tears, cornea, iris, antc, lll
+FROM glasses_prescription_;
 
 INSERT INTO glasses (patient_id, prescription_id, date, brand, model, color, frame, lens, contact_lens, price, additional_comments)
 SELECT patient, prescription, date, brand, model, color, frame, lens, contact_lens, price, additional_comments
 FROM glasses_;
 
-INSERT INTO glasses_prescription (id, patient_id, date, od, os, va_right, va_left, pd, cc, conj, sclera, tears, cornea, iris, antc, lll)
-SELECT (pk, patient, date, od, os, va_right, va_left, pd, cc, conj, sclera, tears, cornea, iris, antc, lll)
-FROM glasses_prescription_;
-
 INSERT INTO insurance (id, patient_id, last_name, first_name, dob, insurance_id, insurance_id_2, can_call, called)
-SELECT pk, patient, last_name, first_name, dob, insurance_id, insurance_id_2, can_call, called
+SELECT id, patient, last_name, first_name, dob, insurance_id, insurance_id_2, can_call, called
 FROM insurance_;
 
-INSERT INTO patient (id, last_name, first_name, dob, phone, phone_2, address, gender, downstairs)
-SELECT pk, last_name, first_name, dob, phone, phone_2, address, gender, downstairs
-FROM patient_;
+DROP TABLE glasses_, glasses_prescription_, insurance, patient_ CASCADE;
 
-DROP TABLE glasses_, glasses_prescription_, insurance, patient_
+
+-- DROP TABLE auth_group, auth_group_permissions, auth_permission, auth_user, auth_user, auth_user_groups, auth_user_user_permissions, django_admin_log, django_content_type, django_migrations;
+
+/*
+ALTER TABLE patient ADD UNIQUE (
+    REPLACE(REPLACE(last_name, ' ', ''), ',', ''),
+    REPLACE(REPLACE(first_name, ' ', ''), ',', ''),
+    dob
+);
+*/

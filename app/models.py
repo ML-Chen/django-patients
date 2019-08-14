@@ -1,25 +1,40 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.urls import reverse
 
 
 class GlassesPrescription(models.Model):
     patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     od = models.CharField(verbose_name='OD', max_length=255, default='')
-    os = models.CharField(verbose_name='OD',max_length=255, default='')
+    os = models.CharField(verbose_name='OD', max_length=255, default='')
     va_right = models.CharField(verbose_name='Visual acuity right', max_length=255, blank=True, default='')
     va_left = models.CharField(verbose_name='Visual acuity right', max_length=255, blank=True, default='')
     pd = models.DecimalField(
         max_digits=3,
         decimal_places=1,
-        validators=[MinValueValidator(10), MaxValueValidator(100)],
+        validators=[MinValueValidator(20), MaxValueValidator(90)],
         verbose_name='PD',
         null=True
     )
+    pd_right = models.DecimalField(
+        max_digits=3,
+        decimal_places=1,
+        validators=[MinValueValidator(10), MaxValueValidator(45)],
+        verbose_name='PD right',
+        null=True
+    )
+    pd_left = models.DecimalField(
+        max_digits=3,
+        decimal_places=1,
+        validators=[MinValueValidator(10), MaxValueValidator(45)],
+        verbose_name='PD left',
+        null=True
+    )
     outside = models.BooleanField(verbose_name='Is outside prescription', default=False)
-    image = models.ImageField(upload_to='prescriptions/%Y/%m/%d', blank=True)
-    image_2 = models.ImageField(upload_to='prescriptions/%Y/%m/%d', blank=True)
+    image = models.ImageField(upload_to='prescriptions/%Y/%m/%d', blank=True, null=True)
+    image_2 = models.ImageField(upload_to='prescriptions/%Y/%m/%d', blank=True, null=True)
     nv = models.BooleanField(verbose_name='Is reading prescription', default=False, null=True)
     height = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     cc = models.CharField(max_length=255, blank=True, default='')
@@ -42,7 +57,7 @@ class ContactLensPrescription(models.Model):
     patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     outside = models.BooleanField(verbose_name='Is outside prescription', default=False)
-    image = models.ImageField(upload_to='prescriptions/%Y/%m/%d', blank=True)
+    image = models.ImageField(upload_to='prescriptions/%Y/%m/%d', blank=True, null=True)
     va_right = models.CharField(verbose_name='Visual acuity right', max_length=8, blank=True, help_text='E.g., 20/40')
     va_left = models.CharField(verbose_name='Visual acuity right', max_length=8, blank=True)
     notes = models.CharField(max_length=255, blank=True, default='')
@@ -168,8 +183,8 @@ class ComprehensiveExam(models.Model):
     anterior_chamber = models.CharField(max_length=100, blank=True)
 
     # TODO: integrate a drawing app, something like https://nidhinp.wordpress.com/2014/02/19/paint-app-in-django/
-    drawing1 = models.ImageField(blank=True)
-    drawing2 = models.ImageField(blank=True)
+    drawing1 = models.ImageField(blank=True, null=True)
+    drawing2 = models.ImageField(blank=True, null=True)
 
     # Dilated fundus exam
     gtt = models.IntegerField(verbose_name="GTT", help_text="# of eye drops", blank=True, null=True)
@@ -241,7 +256,7 @@ class ComprehensiveExam(models.Model):
 class Patient(models.Model):
     last_name = models.CharField(max_length=255, db_index=True)
     first_name = models.CharField(max_length=255, db_index=True)
-    date_of_birth = models.DateField()
+    dob = models.DateField()
     gender = models.CharField(
         choices=(
             ('F', _('Female')),
@@ -261,13 +276,16 @@ class Patient(models.Model):
     downstairs = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.last_name}, {self.first_name}: {self.date_of_birth}'
+        return f'{self.last_name}, {self.first_name}: {self.dob}'
+
+    def get_admin_url(self):
+        return reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
                 name='Last name, first name, date of birth constraint',
-                fields=['last_name', 'first_name', 'date_of_birth']
+                fields=['last_name', 'first_name', 'dob']
             )
         ]
         db_table = 'patient'
