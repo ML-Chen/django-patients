@@ -143,6 +143,13 @@ UPDATE patient_ SET gender = '' WHERE gender IS NULL;
 
 ALTER TABLE glasses ALTER size SET DEFAULT '';
 ALTER TABLE glasses_prescription ALTER notes SET DEFAULT '';
+"""
+ALTER TABLE patient ADD UNIQUE (
+    REPLACE(REPLACE(last_name, ' ', ''), ',', ''),
+    REPLACE(REPLACE(first_name, ' ', ''), ',', ''),
+    dob
+);
+"""
 
 INSERT INTO glasses (patient_id, prescription_id, date, brand, model, color, frame, lens, contact_lens, price, additional_comments)
 SELECT patient, prescription, date, brand, model, color, frame, lens, contact_lens, price, additional_comments
