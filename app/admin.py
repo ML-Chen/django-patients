@@ -1,4 +1,3 @@
-"""
 from django.contrib import admin
 from .models import Patient, Insurance, Glasses, GlassesPrescription, ContactLensPrescription, ComprehensiveExam
 
@@ -82,4 +81,3 @@ class ComprehensiveExamAdmin(admin.ModelAdmin):
             'fields': ('signature',)
         })
     )
-"""
