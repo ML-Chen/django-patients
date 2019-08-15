@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
@@ -20,8 +21,9 @@ from django.views.generic import RedirectView
 from app.views import PatientCreate
 
 urlpatterns = [
-    path(r'^i18n/', include('django.conf.urls.i18n')),
+    path('i18n/', include('django.conf.urls.i18n')),
     path('guanli/', admin.site.urls),
     path('new-patient/', PatientCreate.as_view(), name='new-patient'),
-    path('/', RedirectView.as_view(url='new-patient/', permanent=False), name='index')
+    path('', RedirectView.as_view(url='new-patient/', permanent=False), name='index'),
+    path('__debug__/', include(debug_toolbar.urls)),
 ]

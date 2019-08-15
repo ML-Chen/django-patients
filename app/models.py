@@ -254,9 +254,9 @@ class ComprehensiveExam(models.Model):
 
 
 class Patient(models.Model):
-    last_name = models.CharField(max_length=255, db_index=True)
-    first_name = models.CharField(max_length=255, db_index=True)
-    dob = models.DateField(verbose_name='date of birth')
+    last_name = models.CharField(max_length=255, db_index=True, verbose_name=_('last name'))
+    first_name = models.CharField(max_length=255, db_index=True, verbose_name=_('first name'))
+    dob = models.DateField(verbose_name=_('date of birth'), db_index=True)
     gender = models.CharField(
         choices=(
             ('F', _('Female')),
@@ -265,17 +265,18 @@ class Patient(models.Model):
             ('U', _('Decline to state'))
         ),
         max_length=1,
-        default='U'
+        default='U',
+        verbose_name=_('gender')
     )
-    phone = models.CharField(max_length=255)
-    phone_2 = models.CharField(max_length=255, blank=True, default='')
-    email = models.EmailField(blank=True, null=True)
-    address = models.CharField(max_length=255, blank=True, default='')
-    consent_hipaa = models.NullBooleanField(verbose_name="Consent to HIPAA privacy policy", default=False)
-    consent_tcpa = models.NullBooleanField(verbose_name="Consent to text messages", default=False)
-    diabetes = models.BooleanField()
-    hypertension = models.BooleanField()
-    hypercholesterolemia = models.BooleanField()
+    phone = models.CharField(max_length=255, verbose_name=_('phone'))
+    phone_2 = models.CharField(max_length=255, blank=True, default='', verbose_name=_('phone 2'))
+    email = models.EmailField(blank=True, null=True, verbose_name=_('email'))
+    address = models.CharField(max_length=255, blank=True, default='', verbose_name=_('address'))
+    consent_hipaa = models.NullBooleanField(verbose_name=_("Consent to HIPAA privacy policy"), default=False)
+    consent_tcpa = models.NullBooleanField(verbose_name=_("Consent to text messages"), default=False)
+    diabetes = models.NullBooleanField()
+    hypertension = models.NullBooleanField()
+    hypercholesterolemia = models.NullBooleanField()
     downstairs = models.BooleanField(default=False)
 
     def __str__(self):
@@ -312,7 +313,7 @@ class Glasses(models.Model):
     date = models.DateTimeField(auto_now=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     prescription = models.ForeignKey(GlassesPrescription, on_delete=models.CASCADE)
-    brand = models.CharField(max_length=255, blank=True, default='') # TODO: consider making into choices
+    brand = models.CharField(max_length=255, blank=True, default='')
     model = models.CharField(max_length=255, blank=True, default='')
     color = models.CharField(max_length=255, blank=True, default='')
     size = models.CharField(max_length=255, blank=True, default='')

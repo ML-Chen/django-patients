@@ -30,7 +30,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <h1>Welcome to Flushing Eyes!</h1>
+    <h1>{% trans "Welcome to Flushing Eyes!" %}</h1>
 
     {% get_current_language as LANGUAGE_CODE %}
     {% get_available_languages as LANGUAGES %}
@@ -213,7 +213,7 @@
         </div>
         <div>
             The Practice provides this form to comply with the Health Insurance Portability and Accountability Act of 1996 (HIPAA) and the Telephone Consumer Protection Act of 1991
-            (TCPA). Our notice of Privacy Practices provides information about how we may use and disclose protected health information about you. By signing, you consent to the following:
+            (TCPA). Our notice of Privacy Practices provides information about how we may use and disclose protected health information about you.
             <ul>
                 <li>Protected health information (PHI) may be disclosed or used for treatment, payment, or health care operations;</li>
                 <li>The Practice has a Notice of Privacy Practices and that the patient has the opportunity to review this Notice;</li>
@@ -226,27 +226,27 @@
         </div>
         <div class="form-check">
             <input type="checkbox" id="id_{{ form.consent_hipaa.name }}" name="{{ form.consent_hipaa.name }}" class="form-check-input" checked>
-            <strong><label for="id_consent_hipaa">I consent to the HIPAA privacy policy stated above.</label></strong>
+            <strong><label for="id_consent_hipaa">{% trans "I consent to the HIPAA privacy policy stated above." %}</label></strong>
         </div>
         <div class="form-check">
             <input type="checkbox" id="id_{{ form.consent_tcpa.name }}" name="{{ form.consent_tcpa.name }}" class="form-check-input" checked>
-            <strong><label for="id_consent_tcpa">I'd like to receive text message reminders about my insurance benefits.</label></strong>
+            <strong><label for="id_consent_tcpa">{% trans "I'd like to receive text message reminders about my insurance benefits." %}</label></strong>
         </div>
-        <label for="history">Do you have history of:</label>
+        <label for="history">{% trans "Do you have history of:" %}</label>
         <div id="history">
             <div class="form-check">
-                {{ form.diabetes }}
-                <label for="id_diabetes">Diabetes</label>
+                <input type="checkbox" id="id_diabetes" name="diabetes">
+                <label for="id_diabetes">{% trans "Diabetes" %}</label>
             </div>
             <div class="form-check">
-                {{ form.hypertension }}
-                <label for="id_hypertension">Hypertension</label>
+                <input type="checkbox" id="id_hypertension" name="hypertension">
+                <label for="id_hypertension">{% trans "Hypertension" %}</label>
             </div>
             <div class="form-check">
-                {{ form.hypercholesterolemia }}
-                <label for="id_hypercholesterolemia">Hypercholesterolemia</label>
+                <input type="checkbox" id="id_hypercholesterolemia" name="hypercholesterolemia">
+                <label for="id_hypercholesterolemia">{% trans "Hypercholesterolemia" %}</label>
             </div>
-            <input type="submit" class="btn btn-primary" value="Submit">
+            <input type="submit" class="btn btn-primary" value="{% trans "Submit" %}">
         </div>
     </form>
 </body>
