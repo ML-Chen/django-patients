@@ -40,15 +40,15 @@ msgstr "fecha de nacimiento"
 
 #: .\app\models.py:262
 msgid "Female"
-msgstr "femenino"
+msgstr "Femenino"
 
 #: .\app\models.py:263
 msgid "Male"
-msgstr "masculino"
+msgstr "Masculino"
 
 #: .\app\models.py:264
 msgid "Nonbinary"
-msgstr ""
+msgstr "No binario"
 
 #: .\app\models.py:265
 msgid "Decline to state"
@@ -84,7 +84,7 @@ msgstr ""
 
 #: .\app\patient_form.html:33
 msgid "Welcome to Flushing Eyes!"
-msgstr "Bienvenido a Flushing Eyes!"
+msgstr "¡Bienvenido a Flushing Eyes!"
 
 #: .\app\patient_form.html:229
 msgid "I consent to the HIPAA privacy policy stated above."

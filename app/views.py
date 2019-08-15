@@ -12,13 +12,5 @@ class PatientCreate(CreateView):
     model = Patient
     fields = ['last_name', 'first_name', 'dob', 'gender', 'phone', 'phone_2', 'email', 'address', 'consent_hipaa', 'consent_tcpa', 'diabetes', 'hypertension', 'hypercholesterolemia']
 
-"""
-class PatientFindView(FormView):
-    template_name = 'existing-patient.html'
-    form_class = PatientFindForm
-    success_url = '/thanks/'
-
-    def form_valid(self, form) -> HttpResponse:
-        # This method is called when valid form data has been POSTed.
-        return super().form_valid(form)
-"""
+    def get_success_url(self):
+        return self.object.get_admin_url()

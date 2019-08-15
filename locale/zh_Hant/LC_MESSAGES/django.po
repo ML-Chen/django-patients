@@ -27,11 +27,11 @@ msgstr "左"
 
 #: .\app\models.py:257
 msgid "last name"
-msgstr "姓"
+msgstr "姓氏"
 
 #: .\app\models.py:258
 msgid "first name"
-msgstr "名"
+msgstr "名稱"
 
 #: .\app\models.py:259
 msgid "date of birth"
@@ -55,19 +55,19 @@ msgstr ""
 
 #: .\app\models.py:269
 msgid "gender"
-msgstr "性别认同"
+msgstr "性別認同"
 
 #: .\app\models.py:271
 msgid "phone"
-msgstr "电话"
+msgstr "電話"
 
 #: .\app\models.py:272
 msgid "phone 2"
-msgstr "电话2"
+msgstr "電話2"
 
 #: .\app\models.py:273
 msgid "email"
-msgstr "电子邮件"
+msgstr "電子郵件"
 
 #: .\app\models.py:274
 msgid "address"

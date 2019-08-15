@@ -77,6 +77,7 @@ class PatientAdmin(NestedModelAdmin, AdminAutoSaveMixin):
     ]
     actions = ['mark_not_here', 'mark_here']
     list_filter = ['here']
+    autosave_last_modified_field = 'last_modified'
 
     def mark_not_here(self, request, queryset):
         rows_updated = queryset.update(here=False)
@@ -109,21 +110,25 @@ class GlassesAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
     )
 
     raw_id_fields = ['patient', 'prescription']
+    autosave_last_modified_field = 'last_modified'
 
 
 @admin.register(GlassesPrescription)
 class GlassesPrescriptionAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
     raw_id_fields = ['patient']
+    autosave_last_modified_field = 'last_modified'
 
 
 @admin.register(ContactLensPrescription)
 class ContactLensPrescriptionAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
     raw_id_fields = ['patient']
+    autosave_last_modified_field = 'last_modified'
 
 
 @admin.register(ComprehensiveExam)
 class ComprehensiveExamAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
     raw_id_fields = ['patient']
+    autosave_last_modified_field = 'last_modified'
 
     fieldsets = (
         (None, {
@@ -133,7 +138,7 @@ class ComprehensiveExamAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
             'fields': ('pupils_no_afferent_defect', 'pupils_round_ou', 'pupils_size')
         }),
         (None, {
-            'fields': ('cover_test', ('iop_right', 'iop_left'), 'old_prescription', 'visual_field', 'ocular_dominance', 'extraocular_movement', 'phorias', 'npc', ('dsc_right', 'dsc_left'), ('nsc_right', 'nsc_left'))
+            'fields': ('cover_test', ('iop_right', 'iop_left'), 'visual_field', 'ocular_dominance', 'extraocular_movement', 'phorias', 'npc', ('dsc_right', 'dsc_left'), ('nsc_right', 'nsc_left'))
         }),
         ('Slit lamp examination', {
             'fields': ('lens_lids_lashes', 'conjunctivitis', 'sclera', 'tears', 'cornea', 'iris', 'anterior_chamber')
@@ -159,3 +164,4 @@ class ComprehensiveExamAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
 @admin.register(Insurance)
 class InsuranceAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
     raw_id_fields = ['patient']
+    autosave_last_modified_field = 'last_modified'

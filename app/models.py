@@ -49,6 +49,8 @@ class GlassesPrescription(models.Model):
     antc = models.CharField(max_length=255, blank=True, default='')
     lll = models.CharField(verbose_name='lens/lids/lashes', max_length=255, blank=True, default='')
 
+    last_modified = models.DateTimeField(auto_now=True, null=True)
+
     class Meta:
         db_table = 'glasses_prescription'
 
@@ -137,6 +139,8 @@ class ContactLensPrescription(models.Model):
     color = models.CharField(max_length=25, blank=True, default='')
     brand = models.CharField(max_length=30, blank=True, default='')
     replacement_schedule = models.CharField(max_length=30, blank=True, default='')
+
+    last_modified = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
         db_table = 'contact_lens_prescription'
@@ -249,6 +253,8 @@ class ComprehensiveExam(models.Model):
 
     signature = models.BooleanField(verbose_name="Signature: Dr. John Yin", default=True)
 
+    last_modified = models.DateTimeField(auto_now=True, null=True)
+
     class Meta:
         db_table = 'comprehensive_exam'
 
@@ -279,6 +285,8 @@ class Patient(models.Model):
     hypertension = models.NullBooleanField()
     hypercholesterolemia = models.NullBooleanField()
     downstairs = models.BooleanField(default=False)
+
+    last_modified = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return f'{self.last_name}, {self.first_name}: {self.dob}'
@@ -319,6 +327,8 @@ class Glasses(models.Model):
     tray_num = models.IntegerField(verbose_name="Tray #", validators=[MinValueValidator(800), MaxValueValidator(999)], null=True)
     price = models.CharField(max_length=255, blank=True)
     additional_comments = models.TextField(blank=True, default='')
+
+    last_modified = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
         verbose_name_plural = 'glasses'
