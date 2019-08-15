@@ -68,13 +68,7 @@ CREATE TABLE checkup_ AS (
 ALTER TABLE checkup_ ADD CONSTRAINT fk_checkup_patient FOREIGN KEY (patient) REFERENCES patient (id);
 ALTER TABLE checkup_ ADD id SERIAL PRIMARY KEY;
 DROP TABLE checkup;
--- Recreate table with columns rearranged
-CREATE TABLE checkup AS (
-    SELECT id, patient, last_name, first_name, dob, date, od, os, va_right, va_left, pd, conj, sclera, tears, cornea, iris, antc, cc, lll
-    FROM public.checkup_
-);
-ALTER TABLE checkup ADD PRIMARY KEY (id);
-DROP TABLE checkup_;
+ALTER TABLE checkup_ RENAME TO checkup;
 
 CREATE TABLE glasses_ AS (
     SELECT checkup.patient AS patient, checkup.id AS prescription, glasses.date, brand, model, color, frame, lens, contact_lens, additional_comments, price -- omitting the 'recorded' column
@@ -82,6 +76,7 @@ CREATE TABLE glasses_ AS (
     ON lower(checkup.last_name) = lower(glasses.last_name)
     AND lower(checkup.first_name) = lower(glasses.first_name)
     AND checkup.dob = glasses.dob
+    AND checkup.exam_date = glasses.exam_date
 );
 ALTER TABLE glasses_ ADD CONSTRAINT fk_glasses_checkup FOREIGN KEY (prescription) REFERENCES checkup (id);
 ALTER TABLE glasses_ ADD CONSTRAINT fk_glasses_patient FOREIGN KEY (patient) REFERENCES patient (id);
@@ -138,6 +133,12 @@ UPDATE patient_ SET phone_2 = '' WHERE phone_2 IS NULL;
 UPDATE patient_ SET address = '' WHERE address IS NULL;
 UPDATE patient_ SET gender = '' WHERE gender IS NULL;
 
+UPDATE patient_ SET gender = 'f' WHERE gender = 'F';
+UPDATE patient_ SET gender = 'm' WHERE gender = 'M';
+
+-- Check for other genders.
+SELECT * FROM patient_ WHERE gender != 'f' AND gender != 'm';
+
 -- Manually fix invalid PDs.
 SELECT * FROM glasses_prescription_ WHERE pd > 90;
 
@@ -159,8 +160,8 @@ INSERT INTO glasses (patient_id, prescription_id, date, brand, model, color, fra
 SELECT patient, prescription, date, brand, model, color, frame, lens, contact_lens, price, additional_comments
 FROM glasses_;
 
-INSERT INTO insurance (id, patient_id, last_name, first_name, dob, insurance_id, insurance_id_2, can_call, called)
-SELECT id, patient, last_name, first_name, dob, insurance_id, insurance_id_2, can_call, called
+INSERT INTO insurance (id, patient_id, insurance_id, insurance_id_2)
+SELECT id, patient, insurance_id, insurance_id_2
 FROM insurance_;
 
 DROP TABLE glasses_, glasses_prescription_, insurance_, patient_ CASCADE;

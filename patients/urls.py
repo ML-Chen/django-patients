@@ -26,4 +26,5 @@ urlpatterns = [
     path('new-patient/', PatientCreate.as_view(), name='new-patient'),
     path('', RedirectView.as_view(url='new-patient/', permanent=False), name='index'),
     path('__debug__/', include(debug_toolbar.urls)),
+    path('nested_admin/', include('nested_admin.urls'))
 ]

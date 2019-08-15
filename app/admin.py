@@ -1,44 +1,75 @@
 from django.contrib import admin
-from django.contrib.admin import SimpleListFilter
-from django.utils.translation import ugettext_lazy as _
+from django.forms import TextInput
+from django.db import models
+from nested_admin import NestedModelAdmin, NestedInlineModelAdmin, NestedStackedInline, NestedTabularInline
 from .models import Patient, Insurance, Glasses, GlassesPrescription, ContactLensPrescription, ComprehensiveExam
 
 
 admin.site.disable_action('delete_selected')
 
 
-class InsuranceInline(admin.TabularInline):
+class InsuranceInline(NestedTabularInline):
     model = Insurance
     extra = 0
 
 
-class GlassesInline(admin.TabularInline):
+class GlassesInline(NestedTabularInline):
     model = Glasses
     raw_id_fields = ['prescription']
+    exclude = ['patient']
+    readonly_fields = ['date']
     extra = 0
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size': '25'})},
+        models.TextField: {'widget': TextInput(attrs={'size': '40'})},
+    }
+
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request, obj)
+        fields = fields[-1:] + fields[:-1] # move date field to front
+        return fields
 
 
-class GlassesPrescriptionInline(admin.StackedInline):
+class GlassesPrescriptionInline(NestedTabularInline):
     model = GlassesPrescription
     extra = 0
+    raw_id_fields = ['patient']
+    readonly_fields = ['date']
+    inlines = [GlassesInline]
+
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request, obj)
+        fields = fields[-1:] + fields[:-1] # move date field to front
+        return fields
 
 
-class ContactLensPrescriptionInline(admin.TabularInline):
+class ContactLensPrescriptionInline(NestedTabularInline):
     model = ContactLensPrescription
     extra = 0
+    readonly_fields = ['date']
+
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request, obj)
+        fields = fields[-1:] + fields[:-1] # move date field to front
+        return fields
 
 
-class ComprehensiveExamInline(admin.StackedInline):
+class ComprehensiveExamInline(NestedStackedInline):
     model = ComprehensiveExam
     extra = 0
+    readonly_fields = ['date']
+
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request, obj)
+        fields = fields[-1:] + fields[:-1] # move date field to front
+        return fields
 
 
 @admin.register(Patient)
-class PatientAdmin(admin.ModelAdmin):
+class PatientAdmin(NestedModelAdmin):
     search_fields = ['first_name', 'last_name', 'dob', 'phone', 'phone_2']
     inlines = [
         InsuranceInline,
-        GlassesInline,
         GlassesPrescriptionInline,
         ContactLensPrescriptionInline,
         ComprehensiveExamInline

@@ -9,8 +9,8 @@ class GlassesPrescription(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     od = models.CharField(verbose_name='OD', max_length=255, default='')
     os = models.CharField(verbose_name='OD', max_length=255, default='')
-    va_right = models.CharField(verbose_name='Visual acuity right', max_length=255, blank=True, default='')
-    va_left = models.CharField(verbose_name='Visual acuity right', max_length=255, blank=True, default='')
+    va_right = models.CharField(verbose_name='VA right', max_length=255, blank=True, default='')
+    va_left = models.CharField(verbose_name='VA left', max_length=255, blank=True, default='')
     pd = models.DecimalField(
         max_digits=3,
         decimal_places=1,
@@ -260,13 +260,13 @@ class Patient(models.Model):
     dob = models.DateField(verbose_name=_('date of birth'), db_index=True)
     gender = models.CharField(
         choices=(
-            ('F', _('Female')),
-            ('M', _('Male')),
-            ('N', _('Nonbinary')),
-            ('U', _('Decline to state'))
+            ('f', _('Female')),
+            ('m', _('Male')),
+            ('n', _('Nonbinary')),
+            ('u', _('Decline to state'))
         ),
         max_length=1,
-        default='U',
+        default='u',
         verbose_name=_('gender')
     )
     phone = models.CharField(max_length=255, verbose_name=_('phone'))
@@ -298,13 +298,8 @@ class Patient(models.Model):
 
 class Insurance(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    last_name = models.CharField(max_length=255, blank=True, default='')
-    first_name = models.CharField(max_length=255, blank=True, default='')
-    dob = models.DateField(verbose_name='date of birth')
     insurance_id = models.CharField(max_length=255, blank=True, default='')
     insurance_id_2 = models.CharField(max_length=255, blank=True, default='')
-    can_call = models.BooleanField(default=False)
-    called = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'insurance'

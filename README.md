@@ -3,7 +3,7 @@ Patient check-in and database management with Django
 
 ## Getting Started
 ```sh
-pip install django psycopg2 Pillow django-widget-tweaks
+pip install django psycopg2 Pillow django-widget-tweaks django-debug-toolbar django-nested-admin
 ```
 
 Create `env.sh` with the following content:
