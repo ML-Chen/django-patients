@@ -156,7 +156,7 @@ class ComprehensiveExam(models.Model):
     cover_test = models.CharField(max_length=100, blank=True)
     iop_right = models.IntegerField(verbose_name="IOP (right)", blank=True, null=True)
     iop_left = models.IntegerField(verbose_name="IOP (left)", blank=True, null=True)
-    old_prescription = models.ForeignKey(GlassesPrescription, on_delete=models.SET_NULL, blank=True, null=True, related_name='exams_with_old_prescription')
+    # old_prescription = models.ForeignKey(GlassesPrescription, on_delete=models.SET_NULL, blank=True, null=True, related_name='exams_with_old_prescription')
     visual_field = models.CharField(max_length=100, blank=True)
     ocular_dominance = models.CharField(
         choices=(
@@ -254,6 +254,7 @@ class ComprehensiveExam(models.Model):
 
 
 class Patient(models.Model):
+    here = models.BooleanField(default=False, help_text=_('Is the patient here right now?'), db_index=True)
     last_name = models.CharField(max_length=255, db_index=True, verbose_name=_('last name'))
     first_name = models.CharField(max_length=255, db_index=True, verbose_name=_('first name'))
     dob = models.DateField(verbose_name=_('date of birth'), db_index=True)
