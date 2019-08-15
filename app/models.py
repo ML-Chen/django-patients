@@ -256,7 +256,7 @@ class ComprehensiveExam(models.Model):
 class Patient(models.Model):
     last_name = models.CharField(max_length=255, db_index=True)
     first_name = models.CharField(max_length=255, db_index=True)
-    dob = models.DateField()
+    dob = models.DateField(verbose_name='date of birth')
     gender = models.CharField(
         choices=(
             ('F', _('Female')),
@@ -295,7 +295,7 @@ class Insurance(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     last_name = models.CharField(max_length=255, blank=True, default='')
     first_name = models.CharField(max_length=255, blank=True, default='')
-    dob = models.DateField()
+    dob = models.DateField(verbose_name='date of birth')
     insurance_id = models.CharField(max_length=255, blank=True, default='')
     insurance_id_2 = models.CharField(max_length=255, blank=True, default='')
     can_call = models.BooleanField(default=False)

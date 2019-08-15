@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app.views import PatientCreate
+from app.views import PatientCreate, PatientFindView
 
 urlpatterns = [
     path('guanli/', admin.site.urls),
     path('new-patient/', PatientCreate.as_view(), name='new-patient'),
+    path('existing-patient', PatientFindView.as_view(), name='existing-patient')
 ]

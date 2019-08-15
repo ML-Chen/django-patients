@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 
-class PatientFind(forms.Form):
+class PatientFindForm(forms.Form):
     # existing_patient = forms.BooleanField()
     first_name = forms.CharField(max_length=255)
     last_name = forms.CharField(max_length=255)

@@ -163,7 +163,7 @@ INSERT INTO insurance (id, patient_id, last_name, first_name, dob, insurance_id,
 SELECT id, patient, last_name, first_name, dob, insurance_id, insurance_id_2, can_call, called
 FROM insurance_;
 
-DROP TABLE glasses_, glasses_prescription_, insurance, patient_ CASCADE;
+DROP TABLE glasses_, glasses_prescription_, insurance_, patient_ CASCADE;
 
 
 -- DROP TABLE auth_group, auth_group_permissions, auth_permission, auth_user, auth_user, auth_user_groups, auth_user_user_permissions, django_admin_log, django_content_type, django_migrations;

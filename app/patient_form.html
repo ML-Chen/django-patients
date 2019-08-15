@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Modified from https://stackoverflow.com/a/49685502/5139284 */
+        input[required] + label:after {
+            content: '*';
+            color: red;
+        }
+        div {
+            display: flex;
+            text-align: center;
+            align-items: flex-start;
+        }
+        div input {
+            order: 2;
+        }
+        div label {
+            order: 1;
+        }
+    </style>
+</head>
+<body>
+<form action="/thanks/" method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+        {{ form.first_name.errors }}
+        <span class="helptext">{{ form.first_name.help_text }}</span>
+    </div>
+    <div class="fieldWrapper">
+        {{ form.last_name.label_tag }}
+        {{ form.last_name }}
+        {{ form.last_name.errors }}
+        <span class="helptext">{{ form.last_name.help_text }}</span>
+    </div>
+    <div class="fieldWrapper">
+        {{ form.dob.label_tag }}
+        {{ form.dob }}
+        {{ form.dob.errors }}
+        <span class="helptext">{{ form.dob.help_text }}</span>
+    </div>
+    <div class="fieldWrapper">
+        {{ form.gender.label_tag }}
+        {{ form.gender }}
+        {{ form.gender.errors }}
+        <span class="helptext">{{ form.gender.help_text }}</span>
+    </div>
+    <div class="fieldWrapper">
+        {{ form.phone.label_tag }}
+        {{ form.phone }}
+        {{ form.phone.errors }}
+        <span class="helptext">{{ form.phone.help_text }}</span>
+    </div>
+    <div class="fieldWrapper">
+        {{ form.phone_2.label_tag }}
+        {{ form.phone_2 }}
+        {{ form.phone_2.errors }}
+        <span class="helptext">{{ form.phone_2.help_text }}</span>
+    </div>
+    <div class="fieldWrapper">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {{ form.email.errors }}
+        <span class="helptext">{{ form.email.help_text }}</span>
+    </div>
+    <div class="fieldWrapper">
+        {{ form.address.label_tag }}
+        {{ form.address }}
+        {{ form.address.errors }}
+        <span class="helptext">{{ form.address.help_text }}</span>
+    </div>
+    <div class="fieldWrapper">
+        {{ form.consent_to_hipaa.label_tag }}
+        {{ form.consent_to_hipaa }}
+        {{ form.consent_to_hipaa.errors }}
+        <span class="helptext">{{ form.consent_to_hipaa.help_text }}</span>
+    </div>
+    <div class="fieldWrapper">
+        {{ form.consent_to_tcpa.label_tag }}
+        {{ form.consent_to_tcpa }}
+        {{ form.consent_to_tcpa.errors }}
+        <span class="helptext">{{ form.consent_to_tcpa.help_text }}</span>
+    </div>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
