@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'debug_toolbar',
     'nested_admin',
+    'autosave',
     'app',
 ]
 

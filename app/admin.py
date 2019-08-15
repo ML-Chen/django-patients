@@ -1,3 +1,4 @@
+from autosave.mixins import AdminAutoSaveMixin
 from django.contrib import admin
 from django.forms import TextInput
 from django.db import models
@@ -66,7 +67,7 @@ class ComprehensiveExamInline(NestedStackedInline):
 
 
 @admin.register(Patient)
-class PatientAdmin(NestedModelAdmin):
+class PatientAdmin(NestedModelAdmin, AdminAutoSaveMixin):
     search_fields = ['first_name', 'last_name', 'dob', 'phone', 'phone_2']
     inlines = [
         InsuranceInline,
@@ -97,7 +98,7 @@ class PatientAdmin(NestedModelAdmin):
 
 
 @admin.register(Glasses)
-class GlassesAdmin(admin.ModelAdmin):
+class GlassesAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
     fieldsets = (
         (None, {
             'fields': ('date', 'od', 'os', 'va_right', 'va_left', 'pd', 'outside', 'image', '')
@@ -111,17 +112,17 @@ class GlassesAdmin(admin.ModelAdmin):
 
 
 @admin.register(GlassesPrescription)
-class GlassesPrescriptionAdmin(admin.ModelAdmin):
+class GlassesPrescriptionAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
     raw_id_fields = ['patient']
 
 
 @admin.register(ContactLensPrescription)
-class ContactLensPrescriptionAdmin(admin.ModelAdmin):
+class ContactLensPrescriptionAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
     raw_id_fields = ['patient']
 
 
 @admin.register(ComprehensiveExam)
-class ComprehensiveExamAdmin(admin.ModelAdmin):
+class ComprehensiveExamAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
     raw_id_fields = ['patient']
 
     fieldsets = (
@@ -156,5 +157,5 @@ class ComprehensiveExamAdmin(admin.ModelAdmin):
 
 
 @admin.register(Insurance)
-class InsuranceAdmin(admin.ModelAdmin):
+class InsuranceAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
     raw_id_fields = ['patient']
