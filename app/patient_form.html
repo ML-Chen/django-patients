@@ -1,93 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load widget_tweaks %}
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>New Patient</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        /* Modified from https://stackoverflow.com/a/49685502/5139284 */
-        input[required] + label:after {
-            content: '*';
-            color: red;
+        body {
+            max-width: 50rem;
+            margin: 2rem auto;
+            align-content: center;
         }
-        div {
-            display: flex;
-            text-align: center;
-            align-items: flex-start;
-        }
-        div input {
-            order: 2;
-        }
-        div label {
-            order: 1;
+        @media (max-width: 54rem) {
+            body {
+                margin: 2rem 2rem 2rem 2rem;
+            }
         }
     </style>
 </head>
 <body>
-<form action="/thanks/" method="post">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    <div class="fieldWrapper">
-        {{ form.first_name.label_tag }}
-        {{ form.first_name }}
-        {{ form.first_name.errors }}
-        <span class="helptext">{{ form.first_name.help_text }}</span>
-    </div>
-    <div class="fieldWrapper">
-        {{ form.last_name.label_tag }}
-        {{ form.last_name }}
-        {{ form.last_name.errors }}
-        <span class="helptext">{{ form.last_name.help_text }}</span>
-    </div>
-    <div class="fieldWrapper">
-        {{ form.dob.label_tag }}
-        {{ form.dob }}
-        {{ form.dob.errors }}
-        <span class="helptext">{{ form.dob.help_text }}</span>
-    </div>
-    <div class="fieldWrapper">
-        {{ form.gender.label_tag }}
-        {{ form.gender }}
-        {{ form.gender.errors }}
-        <span class="helptext">{{ form.gender.help_text }}</span>
-    </div>
-    <div class="fieldWrapper">
-        {{ form.phone.label_tag }}
-        {{ form.phone }}
-        {{ form.phone.errors }}
-        <span class="helptext">{{ form.phone.help_text }}</span>
-    </div>
-    <div class="fieldWrapper">
-        {{ form.phone_2.label_tag }}
-        {{ form.phone_2 }}
-        {{ form.phone_2.errors }}
-        <span class="helptext">{{ form.phone_2.help_text }}</span>
-    </div>
-    <div class="fieldWrapper">
-        {{ form.email.label_tag }}
-        {{ form.email }}
-        {{ form.email.errors }}
-        <span class="helptext">{{ form.email.help_text }}</span>
-    </div>
-    <div class="fieldWrapper">
-        {{ form.address.label_tag }}
-        {{ form.address }}
-        {{ form.address.errors }}
-        <span class="helptext">{{ form.address.help_text }}</span>
-    </div>
-    <div class="fieldWrapper">
-        {{ form.consent_to_hipaa.label_tag }}
-        {{ form.consent_to_hipaa }}
-        {{ form.consent_to_hipaa.errors }}
-        <span class="helptext">{{ form.consent_to_hipaa.help_text }}</span>
-    </div>
-    <div class="fieldWrapper">
-        {{ form.consent_to_tcpa.label_tag }}
-        {{ form.consent_to_tcpa }}
-        {{ form.consent_to_tcpa.errors }}
-        <span class="helptext">{{ form.consent_to_tcpa.help_text }}</span>
-    </div>
-    <input type="submit" value="Submit">
-</form>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <h1>Welcome to Flushing Eyes!</h1>
+    <form action="/thanks/" method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-group">
+            {{ form.first_name.label_tag }}
+            {% if form.is_bound %}
+                {% if form.first_name.errors %}
+                    {% render_field form.first_name class="form-control is-invalid" %}
+                    {% for error in form.first_name.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.first_name class="form-control is-valid" %}
+                {% endif %}
+            {% else %}
+                {% render_field form.first_name class="form-control" %}
+            {% endif %}
+            {% if form.first_name.help_text %}
+                <small class="form-text text-muted">{{ form.first_name.help_text }}</small>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.last_name.label_tag }}
+            {% if form.is_bound %}
+                {% if form.last_name.errors %}
+                    {% render_field form.last_name class="form-control is-invalid" %}
+                    {% for error in form.last_name.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.last_name class="form-control is-valid" %}
+                {% endif %}
+            {% else %}
+                {% render_field form.last_name class="form-control" %}
+            {% endif %}
+            {% if form.last_name.help_text %}
+                <small class="form-text text-muted">{{ form.last_name.help_text }}</small>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.dob.label_tag }}
+            {% if form.is_bound %}
+                {% if form.dob.errors %}
+                    {% render_field form.dob class="form-control is-invalid" type="date" %}
+                    {% for error in form.dob.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.dob class="form-control is-valid" type="date" %}
+                {% endif %}
+            {% else %}
+                {% render_field form.dob class="form-control" type="date" %}
+            {% endif %}
+            {% if form.dob.help_text %}
+                <small class="form-text text-muted">{{ form.dob.help_text }}</small>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.gender.label_tag }}
+            {% if form.is_bound %}
+                {% if form.gender.errors %}
+                    {% render_field form.gender class="form-control is-invalid" %}
+                    {% for error in form.gender.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.gender class="form-control is-valid" %}
+                {% endif %}
+            {% else %}
+                {% render_field form.gender class="form-control" %}
+            {% endif %}
+            {% if form.gender.help_text %}
+                <small class="form-text text-muted">{{ form.last_name.help_text }}</small>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.phone.label_tag }}
+            {% if form.is_bound %}
+                {% if form.phone.errors %}
+                    {% render_field form.phone class="form-control is-invalid" %}
+                    {% for error in form.phone.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.phone class="form-control is-valid" %}
+                {% endif %}
+            {% else %}
+                {% render_field form.phone class="form-control" %}
+            {% endif %}
+            {% if form.phone.help_text %}
+                <small class="form-text text-muted">{{ form.phone.help_text }}</small>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.phone_2.label_tag }}
+            {% if form.is_bound %}
+                {% if form.phone_2.errors %}
+                    {% render_field form.phone_2 class="form-control is-invalid" %}
+                    {% for error in form.phone_2.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.phone_2 class="form-control is-valid" %}
+                {% endif %}
+            {% else %}
+                {% render_field form.phone_2 class="form-control" %}
+            {% endif %}
+            {% if form.phone_2.help_text %}
+                <small class="form-text text-muted">{{ form.last_name.help_text }}</small>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.email.label_tag }}
+            {% if form.is_bound %}
+                {% if form.email.errors %}
+                    {% render_field form.email class="form-control is-invalid" %}
+                    {% for error in form.email.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.email class="form-control is-valid" %}
+                {% endif %}
+            {% else %}
+                {% render_field form.email class="form-control" %}
+            {% endif %}
+            {% if form.email.help_text %}
+                <small class="form-text text-muted">{{ form.last_name.help_text }}</small>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.address.label_tag }}
+            {% if form.is_bound %}
+                {% if form.address.errors %}
+                    {% render_field form.address class="form-control is-invalid" %}
+                    {% for error in form.address.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% render_field form.address class="form-control is-valid" %}
+                {% endif %}
+            {% else %}
+                {% render_field form.address class="form-control" %}
+            {% endif %}
+            {% if form.address.help_text %}
+                <small class="form-text text-muted">{{ form.last_name.help_text }}</small>
+            {% endif %}
+        </div>
+        <div>
+            The Practice provides this form to comply with the Health Insurance Portability and Accountability Act of 1996 (HIPAA) and the Telephone Consumer Protection Act of 1991
+            (TCPA). Our notice of Privacy Practices provides information about how we may use and disclose protected health information about you. By signing, you consent to the following:
+            <ul>
+                <li>Protected health information (PHI) may be disclosed or used for treatment, payment, or health care operations;</li>
+                <li>The Practice has a Notice of Privacy Practices and that the patient has the opportunity to review this Notice;</li>
+                <li>The Practice reserves the right to change the Notice of Privacy Practices;</li>
+                <li>The patient has the right to restrict the uses of their information but the Practice does not have to agree with those restrictions;</li>
+                <li>The patient may revoke this Consent in writing at any time and all future disclosures will then cease;</li>
+                <li>The Practice may conduct treatment upon the execution of the Consent.</li>
+                <li>The Practice may send the patient text message reminders about when their insurance benefits are available to use and related information, sent by an automatic or non-automatic telephone dialing system, regardless of whether their phone number is on the National Do Not Call Registry. Consent to this term is not a condition of purchase. You can opt out at any time.</li>
+            </ul>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" id="id_{{ form.consent_hipaa.name }}" name="{{ form.consent_hipaa.name }}" class="form-check-input" checked>
+            <label for="id_consent_hipaa">I consent to the HIPAA privacy policy stated above.</label>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" id="id_{{ form.consent_tcpa.name }}" name="{{ form.consent_tcpa.name }}" class="form-check-input" checked>
+            <label for="id_consent_tcpa">I'd like to receive text message reminders about my insurance benefits.</label>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
 </body>
 </html>
