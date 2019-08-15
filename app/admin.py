@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.forms import TextInput
 from django.db import models
 from nested_admin import NestedModelAdmin, NestedInlineModelAdmin, NestedStackedInline, NestedTabularInline
-from .models import Patient, Insurance, Glasses, GlassesPrescription, ContactLensPrescription, ComprehensiveExam
+from .models import Patient, Insurance, Glasses, GlassesPrescription, ContactLensPrescription, ComprehensiveExam, ContactLens
 
 
 admin.site.disable_action('delete_selected')
@@ -44,10 +44,28 @@ class GlassesPrescriptionInline(NestedTabularInline):
         return fields
 
 
+class ContactLensInline(NestedTabularInline):
+    model = ContactLens
+    raw_id_fields = ['prescription']
+    exclude = ['patient']
+    readonly_fields = ['date']
+    extra = 0
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size': '25'})},
+        models.TextField: {'widget': TextInput(attrs={'size': '40'})},
+    }
+
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request, obj)
+        fields = fields[-1:] + fields[:-1] # move date field to front
+        return fields
+
+
 class ContactLensPrescriptionInline(NestedTabularInline):
     model = ContactLensPrescription
     extra = 0
     readonly_fields = ['date']
+    inlines = ['ContactLensInline']
 
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
@@ -69,14 +87,9 @@ class ComprehensiveExamInline(NestedStackedInline):
 @admin.register(Patient)
 class PatientAdmin(NestedModelAdmin, AdminAutoSaveMixin):
     search_fields = ['first_name', 'last_name', 'dob', 'phone', 'phone_2']
-    inlines = [
-        InsuranceInline,
-        GlassesPrescriptionInline,
-        ContactLensPrescriptionInline,
-        ComprehensiveExamInline
-    ]
+    inlines = [InsuranceInline, GlassesPrescriptionInline, ContactLensPrescriptionInline, ComprehensiveExamInline]
     actions = ['mark_not_here', 'mark_here']
-    list_filter = ['here']
+    list_filter = ['here', 'ready_for_exam']
     autosave_last_modified_field = 'last_modified'
 
     def mark_not_here(self, request, queryset):
@@ -122,6 +135,12 @@ class GlassesPrescriptionAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
 @admin.register(ContactLensPrescription)
 class ContactLensPrescriptionAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
     raw_id_fields = ['patient']
+    autosave_last_modified_field = 'last_modified'
+
+
+@admin.register(ContactLens)
+class ContactLensAdmin(admin.ModelAdmin, AdminAutoSaveMixin):
+    raw_id_fields = ['prescription']
     autosave_last_modified_field = 'last_modified'
 
 

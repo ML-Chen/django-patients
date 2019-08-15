@@ -38,6 +38,7 @@ class GlassesPrescription(models.Model):
     nv = models.BooleanField(verbose_name='Is reading prescription', default=False, null=True)
     height = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     cc = models.CharField(max_length=255, blank=True, default='')
+    payment = models.CharField(max_length=255, blank=True, default='')
     notes = models.CharField(max_length=250, blank=True, default='')
 
     # Deprecated
@@ -144,6 +145,17 @@ class ContactLensPrescription(models.Model):
 
     class Meta:
         db_table = 'contact_lens_prescription'
+
+
+class ContactLens(models.Model):
+    prescription = models.ForeignKey(ContactLensPrescription, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    notes = models.CharField(max_length=500, blank=True)
+    payment = models.CharField(max_length=500, blank=True)
+    billing = models.CharField(max_length=500, blank=True)
+    pickup = models.DateTimeField(null=True)
+
+    last_modified = models.DateTimeField(auto_now=True, null=True)
 
 
 class ComprehensiveExam(models.Model):
@@ -261,6 +273,7 @@ class ComprehensiveExam(models.Model):
 
 class Patient(models.Model):
     here = models.BooleanField(default=False, help_text=_('Is the patient here right now?'), db_index=True)
+    ready_for_exam = models.BooleanField(default=False, db_index=True)
     last_name = models.CharField(max_length=255, db_index=True, verbose_name=_('last name'))
     first_name = models.CharField(max_length=255, db_index=True, verbose_name=_('first name'))
     dob = models.DateField(verbose_name=_('date of birth'), db_index=True)
@@ -325,8 +338,12 @@ class Glasses(models.Model):
     lens = models.CharField(max_length=255, blank=True, default='')
     contact_lens = models.CharField(max_length=255, blank=True, default='', verbose_name='Contact lens (deprecated)')
     tray_num = models.IntegerField(verbose_name="Tray #", validators=[MinValueValidator(800), MaxValueValidator(999)], null=True)
-    price = models.CharField(max_length=255, blank=True)
+    payment = models.CharField(max_length=255, blank=True)
+    billing = models.CharField(max_length=500, blank=True)
     additional_comments = models.TextField(blank=True, default='')
+    due_date = models.DateTimeField(null=True, help_text='Patient needs the glasses to be ready by this time')
+    time_completed = models.DateTimeField(null=True)
+    pickup = models.DateTimeField(null=True)
 
     last_modified = models.DateTimeField(auto_now=True, null=True)
 
