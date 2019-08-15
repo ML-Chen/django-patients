@@ -1,4 +1,5 @@
 {% load widget_tweaks %}
+{% load i18n %}
 
 <head>
     <title>New Patient</title>
@@ -14,6 +15,15 @@
                 margin: 2rem 2rem 2rem 2rem;
             }
         }
+        .lang {
+            background: none;
+            border: none;
+            border-radius: 0;
+            padding: 0 .5rem 0 0;
+            color: #5993bb;
+            cursor: pointer;
+            margin-bottom: .5rem
+        }
     </style>
 </head>
 <body>
@@ -21,11 +31,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <h1>Welcome to Flushing Eyes!</h1>
+
+    {% get_current_language as LANGUAGE_CODE %}
+    {% get_available_languages as LANGUAGES %}
+    {% get_language_info_list for LANGUAGES as languages %}
+    <div class="languages">
+        {% for language in languages %}
+            {# Modified from https://stackoverflow.com/a/33880971/ #}
+            {% if language.code != LANGUAGE_CODE %}
+                <form action="{% url 'set_language' %}" method="post" style="display: inline">{% csrf_token %}
+                    <input name="next" type="hidden" value="{{ redirect_to }}">
+                    <input type="hidden" name="language" value="{{ language.code }}">
+                    <input type="submit" value="{{ language.name_local }}" class="lang">
+                </form>
+            {% endif %}
+        {% endfor %}
+    </div>
+
     <form action="/thanks/" method="post">
         {% csrf_token %}
         {{ form.non_field_errors }}
         <div class="form-group">
-            {{ form.first_name.label_tag }}
+            <strong>{{ form.first_name.label_tag }}</strong>
             {% if form.is_bound %}
                 {% if form.first_name.errors %}
                     {% render_field form.first_name class="form-control is-invalid" %}
@@ -45,7 +72,7 @@
             {% endif %}
         </div>
         <div class="form-group">
-            {{ form.last_name.label_tag }}
+            <strong>{{ form.last_name.label_tag }}</strong>
             {% if form.is_bound %}
                 {% if form.last_name.errors %}
                     {% render_field form.last_name class="form-control is-invalid" %}
@@ -65,7 +92,7 @@
             {% endif %}
         </div>
         <div class="form-group">
-            {{ form.dob.label_tag }}
+            <strong>{{ form.dob.label_tag }}</strong>
             {% if form.is_bound %}
                 {% if form.dob.errors %}
                     {% render_field form.dob class="form-control is-invalid" type="date" %}
@@ -105,7 +132,7 @@
             {% endif %}
         </div>
         <div class="form-group">
-            {{ form.phone.label_tag }}
+            <strong>{{ form.phone.label_tag }}</strong>
             {% if form.is_bound %}
                 {% if form.phone.errors %}
                     {% render_field form.phone class="form-control is-invalid" %}
@@ -199,13 +226,28 @@
         </div>
         <div class="form-check">
             <input type="checkbox" id="id_{{ form.consent_hipaa.name }}" name="{{ form.consent_hipaa.name }}" class="form-check-input" checked>
-            <label for="id_consent_hipaa">I consent to the HIPAA privacy policy stated above.</label>
+            <strong><label for="id_consent_hipaa">I consent to the HIPAA privacy policy stated above.</label></strong>
         </div>
         <div class="form-check">
             <input type="checkbox" id="id_{{ form.consent_tcpa.name }}" name="{{ form.consent_tcpa.name }}" class="form-check-input" checked>
-            <label for="id_consent_tcpa">I'd like to receive text message reminders about my insurance benefits.</label>
+            <strong><label for="id_consent_tcpa">I'd like to receive text message reminders about my insurance benefits.</label></strong>
         </div>
-        <input type="submit" class="btn btn-primary" value="Submit">
+        <label for="history">Do you have history of:</label>
+        <div id="history">
+            <div class="form-check">
+                {{ form.diabetes }}
+                <label for="id_diabetes">Diabetes</label>
+            </div>
+            <div class="form-check">
+                {{ form.hypertension }}
+                <label for="id_hypertension">Hypertension</label>
+            </div>
+            <div class="form-check">
+                {{ form.hypercholesterolemia }}
+                <label for="id_hypercholesterolemia">Hypercholesterolemia</label>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </div>
     </form>
 </body>
 </html>

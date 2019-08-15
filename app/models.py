@@ -273,6 +273,9 @@ class Patient(models.Model):
     address = models.CharField(max_length=255, blank=True, default='')
     consent_hipaa = models.NullBooleanField(verbose_name="Consent to HIPAA privacy policy", default=False)
     consent_tcpa = models.NullBooleanField(verbose_name="Consent to text messages", default=False)
+    diabetes = models.BooleanField()
+    hypertension = models.BooleanField()
+    hypercholesterolemia = models.BooleanField()
     downstairs = models.BooleanField(default=False)
 
     def __str__(self):

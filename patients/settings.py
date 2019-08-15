@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -114,7 +115,7 @@ LANGUAGES = (
     ('en', 'English'),
     ('es', 'Español'),
     ('zh-hans', '简体中文'),
-    ('zh-hant', '繁體中文'),
+    ('zh-hant', '正體中文'),
     ('ko', '한국어')
 )
 
