@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-15 01:56-0400\n"
+"POT-Creation-Date: 2019-08-15 02:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,11 +20,11 @@ msgstr ""
 
 #: .\app\models.py:163
 msgid "Right"
-msgstr ""
+msgstr "derecho"
 
 #: .\app\models.py:164
 msgid "Left"
-msgstr ""
+msgstr "izquierda"
 
 #: .\app\models.py:257
 msgid "last name"
@@ -40,7 +40,7 @@ msgstr "fecha de nacimiento"
 
 #: .\app\models.py:262
 msgid "Female"
-msgstr "femenina"
+msgstr "femenino"
 
 #: .\app\models.py:263
 msgid "Male"
@@ -54,45 +54,49 @@ msgstr ""
 msgid "Decline to state"
 msgstr ""
 
-#: .\app\models.py:270
-msgid "phone"
-msgstr ""
+#: .\app\models.py:269
+msgid "gender"
+msgstr "género"
 
 #: .\app\models.py:271
-msgid "phone 2"
-msgstr ""
+msgid "phone"
+msgstr "teléfono"
 
 #: .\app\models.py:272
+msgid "phone 2"
+msgstr "teléfono 2"
+
+#: .\app\models.py:273
 msgid "email"
 msgstr ""
 
-#: .\app\models.py:273
-msgid "address"
-msgstr ""
-
 #: .\app\models.py:274
+msgid "address"
+msgstr "dirección"
+
+#: .\app\models.py:275
 msgid "Consent to HIPAA privacy policy"
 msgstr ""
 
-#: .\app\models.py:275
+#: .\app\models.py:276
 msgid "Consent to text messages"
 msgstr ""
 
 #: .\app\patient_form.html:33
 msgid "Welcome to Flushing Eyes!"
-msgstr ""
+msgstr "Bienvenido a Flushing Eyes!"
 
 #: .\app\patient_form.html:229
 msgid "I consent to the HIPAA privacy policy stated above."
-msgstr ""
+msgstr "Doy mi consentimiento a la política de privacidad de HIPAA indicada anteriormente."
 
 #: .\app\patient_form.html:233
 msgid "I'd like to receive text message reminders about my insurance benefits."
-msgstr ""
+msgstr "Me gustaría recibir notificaciones por mensaje de texto sobre los beneficios de mi seguro."
 
 #: .\app\patient_form.html:235
 msgid "Do you have history of:"
-msgstr ""
+msgstr "¿Tiene antecedentes de:"
 
 #: .\app\patient_form.html:239
 msgid "Diabetes"
@@ -100,12 +104,12 @@ msgstr ""
 
 #: .\app\patient_form.html:243
 msgid "Hypertension"
-msgstr ""
+msgstr "Hipertensión"
 
 #: .\app\patient_form.html:247
 msgid "Hypercholesterolemia"
-msgstr ""
+msgstr "Hipercolesterolemia"
 
 #: .\app\patient_form.html:249
 msgid "Submit"
-msgstr ""
+msgstr "Enviar"

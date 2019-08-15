@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-15 01:56-0400\n"
+"POT-Creation-Date: 2019-08-15 02:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,53 +28,57 @@ msgstr ""
 
 #: .\app\models.py:257
 msgid "last name"
-msgstr ""
+msgstr "성"
 
 #: .\app\models.py:258
 msgid "first name"
-msgstr ""
+msgstr "이름"
 
 #: .\app\models.py:259
 msgid "date of birth"
-msgstr ""
+msgstr "생년월일"
 
 #: .\app\models.py:262
 msgid "Female"
-msgstr ""
+msgstr "여성"
 
 #: .\app\models.py:263
 msgid "Male"
-msgstr ""
+msgstr "남성"
 
 #: .\app\models.py:264
 msgid "Nonbinary"
-msgstr ""
+msgstr "논바이너리"
 
 #: .\app\models.py:265
 msgid "Decline to state"
 msgstr ""
 
-#: .\app\models.py:270
-msgid "phone"
-msgstr ""
+#: .\app\models.py:269
+msgid "gender"
+msgstr "성 정체성"
 
 #: .\app\models.py:271
-msgid "phone 2"
-msgstr ""
+msgid "phone"
+msgstr "전화 번호"
 
 #: .\app\models.py:272
-msgid "email"
-msgstr ""
+msgid "phone 2"
+msgstr "전화 번호 2"
 
 #: .\app\models.py:273
-msgid "address"
-msgstr ""
+msgid "email"
+msgstr "이메일"
 
 #: .\app\models.py:274
+msgid "address"
+msgstr "주소"
+
+#: .\app\models.py:275
 msgid "Consent to HIPAA privacy policy"
 msgstr ""
 
-#: .\app\models.py:275
+#: .\app\models.py:276
 msgid "Consent to text messages"
 msgstr ""
 
@@ -96,16 +100,16 @@ msgstr ""
 
 #: .\app\patient_form.html:239
 msgid "Diabetes"
-msgstr ""
+msgstr "당뇨병"
 
 #: .\app\patient_form.html:243
 msgid "Hypertension"
-msgstr ""
+msgstr "고혈압"
 
 #: .\app\patient_form.html:247
 msgid "Hypercholesterolemia"
-msgstr ""
+msgstr "고 콜레스테롤 혈증"
 
 #: .\app\patient_form.html:249
 msgid "Submit"
-msgstr ""
+msgstr "제출"

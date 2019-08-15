@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-15 01:56-0400\n"
+"POT-Creation-Date: 2019-08-15 02:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,27 +54,31 @@ msgstr ""
 msgid "Decline to state"
 msgstr ""
 
-#: .\app\models.py:270
-msgid "phone"
+#: .\app\models.py:269
+msgid "gender"
 msgstr ""
 
 #: .\app\models.py:271
-msgid "phone 2"
+msgid "phone"
 msgstr ""
 
 #: .\app\models.py:272
-msgid "email"
+msgid "phone 2"
 msgstr ""
 
 #: .\app\models.py:273
-msgid "address"
+msgid "email"
 msgstr ""
 
 #: .\app\models.py:274
-msgid "Consent to HIPAA privacy policy"
+msgid "address"
 msgstr ""
 
 #: .\app\models.py:275
+msgid "Consent to HIPAA privacy policy"
+msgstr ""
+
+#: .\app\models.py:276
 msgid "Consent to text messages"
 msgstr ""
 

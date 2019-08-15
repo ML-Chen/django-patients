@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-15 01:56-0400\n"
+"POT-Creation-Date: 2019-08-15 02:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,61 +19,65 @@ msgstr ""
 
 #: .\app\models.py:163
 msgid "Right"
-msgstr ""
+msgstr "右"
 
 #: .\app\models.py:164
 msgid "Left"
-msgstr ""
+msgstr "左"
 
 #: .\app\models.py:257
 msgid "last name"
-msgstr ""
+msgstr "姓"
 
 #: .\app\models.py:258
 msgid "first name"
-msgstr ""
+msgstr "名"
 
 #: .\app\models.py:259
 msgid "date of birth"
-msgstr ""
+msgstr "出生日期"
 
 #: .\app\models.py:262
 msgid "Female"
-msgstr ""
+msgstr "女"
 
 #: .\app\models.py:263
 msgid "Male"
-msgstr ""
+msgstr "男"
 
 #: .\app\models.py:264
 msgid "Nonbinary"
-msgstr ""
+msgstr "非二元"
 
 #: .\app\models.py:265
 msgid "Decline to state"
 msgstr ""
 
-#: .\app\models.py:270
-msgid "phone"
-msgstr ""
+#: .\app\models.py:269
+msgid "gender"
+msgstr "性別認同"
 
 #: .\app\models.py:271
-msgid "phone 2"
-msgstr ""
+msgid "phone"
+msgstr "電話"
 
 #: .\app\models.py:272
-msgid "email"
-msgstr ""
+msgid "phone 2"
+msgstr "電話2"
 
 #: .\app\models.py:273
-msgid "address"
-msgstr ""
+msgid "email"
+msgstr "電子郵件"
 
 #: .\app\models.py:274
+msgid "address"
+msgstr "地址"
+
+#: .\app\models.py:275
 msgid "Consent to HIPAA privacy policy"
 msgstr ""
 
-#: .\app\models.py:275
+#: .\app\models.py:276
 msgid "Consent to text messages"
 msgstr ""
 
@@ -91,20 +95,20 @@ msgstr ""
 
 #: .\app\patient_form.html:235
 msgid "Do you have history of:"
-msgstr ""
+msgstr "您否有："
 
 #: .\app\patient_form.html:239
 msgid "Diabetes"
-msgstr ""
+msgstr "糖尿病"
 
 #: .\app\patient_form.html:243
 msgid "Hypertension"
-msgstr ""
+msgstr "高血壓"
 
 #: .\app\patient_form.html:247
 msgid "Hypercholesterolemia"
-msgstr ""
+msgstr "高脂血症"
 
 #: .\app\patient_form.html:249
 msgid "Submit"
-msgstr ""
+msgstr "提交"
