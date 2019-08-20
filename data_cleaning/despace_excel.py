@@ -26,6 +26,7 @@ def title_case(s: str) -> str:
 
 
 # Converts a 1-based column number to its letter
+# Modified from https://stackoverflow.com/a/23862195/5139284
 def colnum2str(n: int) -> str:
     string = ""
     while n > 0:
