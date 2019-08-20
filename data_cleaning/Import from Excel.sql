@@ -49,8 +49,8 @@ CREATE TABLE glasses (
     frame varchar(255),
     lens varchar(255),
     contact_lens varchar(255),
-    additional_comments varchar(255),
-    payment varchar(255)
+    payment varchar(255),
+    additional_comments varchar(255)
 ); -- don't import recorded column
 
 CREATE TABLE insurance (
@@ -63,27 +63,7 @@ CREATE TABLE insurance (
    called bool
 );
 
-/*
-INSERT INTO patient (id, last_name, first_name, dob, phone, phone_2, address, gender, downstairs)
-SELECT id, last_name, first_name, dob, phone, phone_2, address, gender, downstairs
-FROM patient_;
-
-INSERT INTO glasses_prescription (id, patient_id, date, od, os, va_right, va_left, pd, cc, conj, sclera, tears, cornea, iris, antc, lll)
-SELECT id, patient, date, od, os, va_right, va_left, pd, cc, conj, sclera, tears, cornea, iris, antc, lll
-FROM glasses_prescription_;
-
-INSERT INTO glasses (patient_id, prescription_id, date, brand, model, color, frame, lens, contact_lens, price, additional_comments)
-SELECT patient, prescription, date, brand, model, color, frame, lens, contact_lens, price, additional_comments
-FROM glasses_;
-
-INSERT INTO insurance (id, patient_id, insurance_id, insurance_id_2)
-SELECT id, patient, insurance_id, insurance_id_2
-FROM insurance_;
- */
-
--- somehow get tables from Excel??
-
--- COPY patient FROM 'C:/Users/micha/Google Drive/Patients 8-16-19/Patient.txt' WITH DELIMITER '\t' CSV HEADER;
+-- Now, run excel2postgres.py
 
 CREATE TABLE checkup_joined AS (
     SELECT patient.id AS patient, checkup.last_name, checkup.first_name, checkup.dob, date, od, os, va_right, va_left, pd, conj, sclera, tears, cornea, iris, antc, lll, cc
@@ -97,7 +77,7 @@ CREATE TABLE checkup_orphans AS (
 );
 
 CREATE TABLE glasses_joined AS (
-    SELECT checkup.patient AS patient, checkup.id AS prescription, glasses.date, brand, model, color, frame, lens, contact_lens, additional_comments, price -- omitting the 'recorded' column
+    SELECT checkup.patient AS patient, checkup.id AS prescription, glasses.date, brand, model, color, frame, lens, contact_lens, additional_comments, payment -- omitting the 'recorded' column
     FROM public.glasses AS glasses LEFT JOIN public.checkup AS checkup
      ON lower(checkup.last_name) = lower(glasses.last_name)
          AND lower(checkup.first_name) = lower(glasses.first_name)
