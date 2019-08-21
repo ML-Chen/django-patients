@@ -45,7 +45,7 @@ cursor = conn.cursor()
 TableProps = namedtuple('FileTableName', 'filename tablename fields')
 tableprops = [
     # TableProps('Patient', 'patient', ('last_name', 'first_name', 'dob', 'phone', 'phone_2', 'address', 'gender', 'downstairs')),
-    TableProps('Checkups', 'glasses_prescription', ('last_name', 'first_name', 'dob', 'date', 'od', 'os', 'va_right', 'va_left', 'pd', 'cc', 'conj', 'sclera', 'tears', 'cornea', 'iris', 'antc', 'lll')),
+    # TableProps('Checkups', 'glasses_prescription', ('last_name', 'first_name', 'dob', 'date', 'od', 'os', 'va_right', 'va_left', 'pd', 'cc', 'conj', 'sclera', 'tears', 'cornea', 'iris', 'antc', 'lll')),
     TableProps('Glasses', 'glasses', ('last_name', 'first_name', 'dob', 'date', 'brand', 'model', 'color', 'frame', 'lens', 'contact_lens', 'payment', 'additional_comments')),
     TableProps('Insurance', 'insurance', ('last_name', 'first_name', 'dob', 'insurance_id', 'insurance_id_2'))
 ]
@@ -64,21 +64,24 @@ for tup in tableprops:
         vars: Dict[str, Union[str, None]] = {}
         for col, header in headers:
             val: Union[str, float, datetime.datetime, None] = sheet[col + row].value
+            # Assumes there are no date fields that are None
             if val is None:
                 val = ''
-            elif type(val) == datetime.datetime:
-                val = str(val)
             elif val == 0:
-                val = "NULL"
-            elif type(val) == str:
-                val = val.replace("'", "’")
+                val = None
             vars[header] = val
 
-        fields = tup.fields
+        fields: List[str] = tup.fields
         vals = [vars[field] for field in fields]
-        query = f"""INSERT INTO {tup.tablename} {str(fields).replace("'", "")} VALUES {str(vals).replace("'NULL'", "NULL").replace('[', '(').replace(']', ')')}"""
+        if vals == [''] * len(vals):
+            print(f'Row {row} was skipped because it was empty')
+            continue
+        query = f"""
+            INSERT INTO {tup.tablename} {str(fields).replace("'", '')}
+            VALUES ({('%s, ' * len(vals)).rstrip(', ')})
+            """
 
-        cursor.execute(query)
+        cursor.execute(query, vals)
 
     conn.commit()
 
