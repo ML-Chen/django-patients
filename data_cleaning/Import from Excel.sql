@@ -65,31 +65,31 @@ CREATE TABLE insurance (
 
 -- Now, run excel2postgres.py
 
-CREATE TABLE checkup_joined AS (
-    SELECT patient.id AS patient, checkup.last_name, checkup.first_name, checkup.dob, date, od, os, va_right, va_left, pd, conj, sclera, tears, cornea, iris, antc, lll, cc
-    FROM public.checkup AS checkup LEFT JOIN public.patient AS patient
-    ON lower(patient.last_name) = lower(checkup.last_name)
-    AND lower(patient.first_name) = lower(checkup.first_name)
-    AND patient.dob = checkup.dob
+CREATE TABLE glasses_prescription_joined AS (
+    SELECT patient.id AS patient, patient.last_name, patient.first_name, patient.dob, date, od, os, va_right, va_left, pd, conj, sclera, tears, cornea, iris, antc, lll, cc
+    FROM public.glasses_prescription AS glasses_prescription LEFT JOIN public.patient AS patient
+    ON REPLACE(patient.last_name, ' ', '') ILIKE CONCAT(REPLACE(glasses_prescription.last_name, ' ', ''), '%')
+    AND REPLACE(patient.first_name, ' ', '') ILIKE CONCAT(REPLACE(glasses_prescription.first_name, ' ', ''), '%')
+    AND patient.dob = glasses_prescription.dob
 );
-CREATE TABLE checkup_orphans AS (
-    SELECT * FROM checkup_joined WHERE checkup_joined.patient IS NULL
+CREATE TABLE glasses_prescription_orphans AS (
+    SELECT * FROM glasses_prescription_joined WHERE glasses_prescription_joined.patient IS NULL
 );
 
 CREATE TABLE glasses_joined AS (
-    SELECT checkup.patient AS patient, checkup.id AS prescription, glasses.date, brand, model, color, frame, lens, contact_lens, additional_comments, payment -- omitting the 'recorded' column
-    FROM public.glasses AS glasses LEFT JOIN public.checkup AS checkup
-     ON lower(checkup.last_name) = lower(glasses.last_name)
-         AND lower(checkup.first_name) = lower(glasses.first_name)
-         AND checkup.dob = glasses.dob
-         AND checkup.exam_date = glasses.exam_date
+    SELECT glasses_prescription.patient AS patient, glasses_prescription.id AS prescription, patient.last_name, patient.first_name, patient.dob, glasses.date, brand, model, color, frame, lens, contact_lens, additional_comments, payment -- omitting the 'recorded' column
+    FROM public.glasses AS glasses LEFT JOIN public.glasses_prescription AS glasses_prescription
+    ON REPLACE(patient.last_name, ' ', '') ILIKE CONCAT(REPLACE(glasses.last_name, ' ', ''), '%')
+    AND REPLACE(patient.first_name, ' ', '') ILIKE CONCAT(REPLACE(glasses.first_name, ' ', ''), '%')
+    AND glasses_prescription.dob = glasses.dob
+    AND glasses_prescription.date = glasses.date
 );
 CREATE TABLE glasses_orphans AS (
     SELECT * FROM glasses_joined WHERE glasses_joined.patient IS NULL OR prescription IS NULL
 );
 
 CREATE TABLE insurance_joined AS (
-    SELECT patient.id AS patient, insurance.last_name, insurance.first_name, insurance.dob, insurance_id, insurance_id_2, can_call, called
+    SELECT patient.id AS patient, patient.last_name, patient.first_name, patient.dob, insurance_id, insurance_id_2, can_call, called
     FROM public.insurance AS insurance LEFT JOIN public.patient AS patient
     ON lower(patient.last_name) = lower(insurance.last_name)
         AND lower(patient.first_name) = lower(insurance.first_name)
@@ -98,3 +98,14 @@ CREATE TABLE insurance_joined AS (
 CREATE TABLE insurance_orphans AS (
     SELECT * FROM insurance_joined WHERE insurance_joined.patient IS NULL OR prescription IS NULL
 );
+
+ALTER TABLE glasses_prescription_joined DROP last_name, DROP first_name, DROP dob;
+ALTER TABLE glasses_joined DROP last_name, DROP first_name, DROP dob;
+ALTER TABLE insurance_joined DROP last_name, DROP first_name, DROP dob;
+
+DROP TABLE glasses_prescription;
+ALTER TABLE glasses_prescription_joined RENAME TO glasses_prescription;
+DROP TABLE glasses;
+ALTER TABLE glasses_joined RENAME TO glasses;
+DROP TABLE insurance;
+ALTER TABLE insurance_joined RENAME TO insurance;
